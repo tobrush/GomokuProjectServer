@@ -46,7 +46,11 @@ router.post('/signup', async function(req, res, next) {
     await users.insertOne({
       username: username,
       password: hash, // 해시된 비밀번호 저장
-      nickname: nickname
+      nickname: nickname,
+      level: 1,       // 초기 레벨
+      score: 100,     // 초기 점수
+      coin: 1000     // 초기 코인
+
     });
 
     res.status(201).send("회원가입이 완료되었습니다");
@@ -80,7 +84,14 @@ router.post("/signin", async function(req, res, next) {
                 req.session.userId = existingUser._id.toString();
                 req.session.username = existingUser.username;
                 req.session.nickname = existingUser.nickname;
-                res.json({ result: ResponseType.SUCCESS });
+                res.json({
+                    result: ResponseType.SUCCESS,
+                    nickname: existingUser.nickname,
+                    level: existingUser.level,
+                    coin: existingUser.coin,
+                    score: existingUser.score
+                });
+
             }
             else
             {
