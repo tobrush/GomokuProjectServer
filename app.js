@@ -48,6 +48,16 @@ connectDB().catch(err => {
 });
 
 
+
+app.get("/ping", (req, res) => {
+  res.json({ status: "ok", timestamp: Date.now() });
+});
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Server running...");
+});
+
+
 //로그인 API
 app.use(session({
   secret: process.env.SESSION_SECRET || 'session-login', // 보안을 위해 환경변수 사용 권장

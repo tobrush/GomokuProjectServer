@@ -56,6 +56,8 @@ module.exports = function(server) {
             var blockIndex = playerInfo.blockIndex;
 
             console.log('doPlayer : ', roomId, 'block index : ',blockIndex);
+
+            //클라이언트에게 전달
             socket.to(roomId).emit('doOpponent', {blockIndex: blockIndex});
         });
 
@@ -64,3 +66,16 @@ module.exports = function(server) {
         });
     });
 };
+
+mockModule = {};
+mockModule.CheckAvailable = function(blockIndex) {
+    if (blockIndex.user.HaveSuperPlayer == true)
+    {
+        return true;
+    }
+    
+    else{
+        if(ckIndex.isAlreadyStoneeeXIST) return false;``
+    }
+    return true;
+}
