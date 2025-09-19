@@ -122,6 +122,36 @@ router.post('/signout', function(req, res, next) {
     });
 });
 
+//자동 로그인
+router.get('/auto-signin', async function(req, res, next) {
+  try {
+    if (!req.session.isAuthenticated) {
+      return res.status(401).json({ result: 0, message: "세션이 유효하지 않습니다" });
+    }
+
+    var userId = req.session.userId;
+    var database = req.app.get('database');
+    var users = database.collection('users');
+    const user = await users.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      return res.status(404).json({ result: 0, message: "사용자를 찾을 수 없습니다" });
+    }
+
+    res.json({
+      result: ResponseType.SUCCESS,
+      nickname: user.nickname,
+      level: user.level,
+      coin: user.coin,
+      score: user.score
+    });
+  } catch (err) {
+    console.error("자동 로그인 중 오류:", err);
+    res.status(500).send("서버 오류가 발생했습니다");
+  }
+});
+
+
 //점수 추가
 router.post('/addscore', async function(req, res, next) {
     try
